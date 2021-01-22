@@ -1,5 +1,4 @@
 const express = require('express');
-const { route } = require('../app');
 const router = express.Router();
 
 
@@ -57,13 +56,13 @@ router.get('/:idProduto', (req, res, next) => {
     
 })
 
-route.patch('/', (req, res, next) => {
+router.patch('/', (req, res, next) => {
     res.status(201).send({
         mensagem: 'Usando o PATCH dentro da rota de produtos'
     })
 })
 
-route.delete('/', (req, res, next) => {
+router.delete('/', (req, res, next) => {
     res.status(201).send({
         mensagem: 'Usando o DELETE dentro da rota de produtos'
     })
