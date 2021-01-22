@@ -1,0 +1,22 @@
+{
+  "name": "apinode",
+  "version": "1.0.0",
+  "description": "Primeiro teste de API em node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NayFreire/apiNode.git"
+  },
+  "author": "Nayara Ribeiro Freire",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NayFreire/apiNode/issues"
+  },
+  "homepage": "https://github.com/NayFreire/apiNode#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
