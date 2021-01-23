@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
         }
     ]
     res.status(200).send({
-        mensagem: 'Usando o GET dentro da rota de produtos',
+        mensagem: 'Retorna todos os produtos',
         resultado: produtos
     })
 })
@@ -33,7 +33,7 @@ router.get('/', (req, res, next) => {
 //INSERE UM PRODUTO
 router.post('/', (req, res, next) => {
     res.status(201).send({
-        mensagem: 'Usando o POST dentro da rota de produtos'
+        mensagem: 'Insere um produto'
     })
 })
 
@@ -56,15 +56,17 @@ router.get('/:idProduto', (req, res, next) => {
     
 })
 
+//ALTERA UM PRODUTO
 router.patch('/', (req, res, next) => {
     res.status(201).send({
-        mensagem: 'Usando o PATCH dentro da rota de produtos'
+        mensagem: 'Produto alterado'
     })
 })
 
+//DELETA UM PRODUTO
 router.delete('/', (req, res, next) => {
     res.status(201).send({
-        mensagem: 'Usando o DELETE dentro da rota de produtos'
+        mensagem: 'Produto deletado'
     })
 })
 
