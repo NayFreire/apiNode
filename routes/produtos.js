@@ -32,14 +32,27 @@ router.get('/', (req, res, next) => {
 
 //INSERE UM PRODUTO
 router.post('/', (req, res, next) => {
-    const produto = {
-        nome: req.body.nome,
-        preco : req.body.preco
-    }
+    // const produto = {
+    //     nome: req.body.nome,
+    //     preco : req.body.preco
+    // }
 
-    res.status(201).send({
-        mensagem: 'Insere um produto',
-        produtoCriado: produto
+    mysql.getConnection((error, conn) => {
+        conn.query('INSERT INTO produto (nome, preco) VALUES (?, ?)', [req.body.nome, req.body.preco], (error, resultado, fields) => {
+            // conn.release();
+
+            if(error){
+                return res.status(500).send({
+                    error: error,
+                    response: null
+                })
+            }
+
+            res.status(201).send({
+                mensagem: 'Produto inserido com sucesso',
+                idProduto: resultado.insertId //Retorna o id do produto que acabou de ser inserido
+            })
+        })
     })
 })
 
