@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const rotaProdutos = require('./routes/produtos')
 const rotasPedidos = require('./routes/pedidos')
+const rotasUsuarios = require('./routes/usuarios')
 
 app.use(morgan('dev')) //Morgan trás um log do tipo de request que foi realizado: se eu pedi um get, no terminal, aparece 'GET /rota número_do_status tempo'
 app.use(bodyParser.urlencoded({extended: false}))
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotasPedidos);
+app.use('/usuarios', rotasUsuarios)
 
 //QUANDO NENHUMA ROTA É ENCONTRADA, ENTRA AQUI
 app.use((req, res, next) => {
