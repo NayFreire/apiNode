@@ -4,42 +4,38 @@ const mysql = require('../mysql').pool
 
 // RETORNA TODOS OS PRODUTOS
 router.get('/', (req, res, next) => {
-    let produtos = [
-        {
-            id: 1,
-            nome: 'alface',
-            especificacao: 'lisa',
-            qtd: 30
-        },
-        {
-            id: 2,
-            nome: 'repolho',
-            especificacao: 'roxo',
-            qtd: 0
-        },
-        {
-            id: 3,
-            nome: 'manga',
-            especificacao: 'tomy',
-            qtd: 60
+    mysql.getConnection((error, conn) => {
+        if(error){
+            return res.status(500).send({
+                error: error
+            })
         }
-    ]
-    res.status(200).send({
-        mensagem: 'Retorna todos os produtos',
-        resultado: produtos
+
+        conn.query('SELECT * FROM produto', (error, resultado, fields) => {
+            if(error){
+                return res.status(500).send({
+                    error: error
+                })
+            }
+
+            return res.status(200).send({
+                response: resultado
+            })
+        })
     })
 })
 
 //INSERE UM PRODUTO
 router.post('/', (req, res, next) => {
-    // const produto = {
-    //     nome: req.body.nome,
-    //     preco : req.body.preco
-    // }
-
     mysql.getConnection((error, conn) => {
+        if(error){
+            return res.status(500).send({
+                error: error
+            })
+        }
+        
         conn.query('INSERT INTO produto (nome, preco) VALUES (?, ?)', [req.body.nome, req.body.preco], (error, resultado, fields) => {
-            // conn.release();
+            conn.release();
 
             if(error){
                 return res.status(500).send({
@@ -58,34 +54,79 @@ router.post('/', (req, res, next) => {
 
 //RETORNA OS DADOS DE UM PRODUTO
 router.get('/:idProduto', (req, res, next) => {
-    const id = req.params.idProduto
+    mysql.getConnection((error, conn) => {
+        if(error){
+            return res.status(500).send({
+                error: error
+            })
+        }
 
-    if(id === 'especial'){
-        res.status(200).send({
-            mensagem: 'Você descobriu o id especial',
-            id: id
+        conn.query('SELECT * FROM produto WHERE idProduto = ?', [req.params.idProduto], (error, resultado, fields) => {
+            if(error){
+                return res.status(500).send({
+                    error: error
+                })
+            }
+
+            return res.status(200).send({
+                response: resultado
+            })
         })
-    }
-    else{
-        res.status(200).send({
-            mensagem: 'Você passou um id',
-        })
-    }
+    })
 
     
 })
 
 //ALTERA UM PRODUTO
 router.patch('/', (req, res, next) => {
-    res.status(201).send({
-        mensagem: 'Produto alterado'
+    mysql.getConnection((error, conn) => {
+        if(error){
+            return res.status(500).send({
+                error: error
+            })
+        }
+        
+        conn.query('UPDATE produto SET nome = ?, preco = ? WHERE idProduto = ?', [req.body.nome, req.body.preco, req.body.idProduto], (error, resultado, fields) => {
+            conn.release();
+
+            if(error){
+                return res.status(500).send({
+                    error: error,
+                    response: null
+                })
+            }
+
+            res.status(202).send({
+                mensagem: 'Produto alterado com sucesso'
+            })
+        })
     })
 })
 
 //DELETA UM PRODUTO
 router.delete('/', (req, res, next) => {
-    res.status(201).send({
-        mensagem: 'Produto deletado'
+    mysql.getConnection((error, conn) => {
+        if(error){
+            return res.status(500).send({
+                error: error
+            })
+        }
+        
+        conn.query('DELETE FROM produto WHERE idProduto = ?', [req.body.idProduto], (error, resultado, fields) => {
+            conn.release();
+
+            if(error){
+                return res.status(500).send({
+                    error: error,
+                    response: null
+                })
+            }
+
+            res.status(202).send({
+                mensagem: 'Produto deletado com sucesso',
+                idProduto: resultado.insertId //Retorna o id do produto que acabou de ser inserido
+            })
+        })
     })
 })
 
