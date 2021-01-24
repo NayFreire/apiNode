@@ -12,18 +12,25 @@ router.get('/', (req, res, next) => {
             })
         }
 
-        conn.query('SELECT * FROM pedidos', (error, result, fields) => {
+        conn.query(`SELECT pedidos.idPedido, pedidos.quantidade, produto.idProduto, produto.nome, produto.preco 
+        FROM pedidos INNER JOIN produto 
+        ON produto.idProduto = pedidos.idProduto`, 
+            (error, result, fields) => {
             if(error){
                 return res.status(500).send({
                     error: error
                 })
             }
             const response = {
-                quantidade: result.length,
+                quantidadeRegistros: result.length,
                 pedidos: result.map(pedido => {
                     return{
                         idPedido: pedido.idPedido,
-                        idProduto: pedido.idProduto,
+                        produto: {
+                            idProduto: pedido.idProduto,
+                            nome: pedido.nome,
+                            preco: pedido.preco
+                        },
                         quantidade: pedido.quantidade,
                         request: {
                             tipo: 'GET',
